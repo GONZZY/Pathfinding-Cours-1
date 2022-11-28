@@ -13,17 +13,17 @@ public class Graph
     // On va créer un tableau de listes de int nVoisinsNodes qui sont respectivement les voisins des vertices
     // Ex: nodes[0] = voisinsvertices[0]
     // Nous utilisons des listes pour permettre l'ajout dynamique de CHEMINS (pas de noeuds) pendant l'exécution
-    private List<int>[] adjacencyNeighborsLists;
+    private SortedSet<int>[] adjacencyNeighborsLists;
 
     public Graph(int nNodes)
     {
         this.nNodes = nNodes;
 
-        adjacencyNeighborsLists = new List<int>[nNodes];
+        adjacencyNeighborsLists = new SortedSet<int>[nNodes];
 
         for (int i = 0; i < nNodes; ++i)
         {
-            adjacencyNeighborsLists[i] = new List<int>();
+            adjacencyNeighborsLists[i] = new SortedSet<int>();
         }
     }
     // Ajouter UN chemin direct unidirectionnel entre le noeud identifié par IDnodeA et le IDnodeB
@@ -33,12 +33,15 @@ public class Graph
     // Ajouter un chemin bidirectionnel
     public void AddBidirectEdge(int IDnodeA, int IDnodeB)
     {
+        if (adjacencyNeighborsLists[IDnodeA].Contains(IDnodeB))
+            return;
         AddEdge(IDnodeA, IDnodeB);
         AddEdge(IDnodeB, IDnodeA);
     }
     // ToArray retourne un tableau contenant les éléments de la liste
     // Ceci fait une copie et ne retourne pas la liste en tant que telle
     public int[] GetNeighbours(int IDnode) => adjacencyNeighborsLists[IDnode].ToArray();
+    public SortedSet<int> GetNeighboursUnsafe(int IDNode) => adjacencyNeighborsLists[IDNode];
 
     // Crée un string des voisins comme suit:
     //
